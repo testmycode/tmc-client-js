@@ -1,10 +1,6 @@
 import 'babel-polyfill';
 import 'fetch-polyfill';
 
-import * as _auth from './auth';
+import TmcClient from './tmc-client';
 
-export const auth = _auth;
-
-window.TmcClient = {
-  auth: _auth
-};
+export default TmcClient;

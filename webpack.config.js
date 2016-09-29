@@ -7,7 +7,9 @@ module.exports = env => {
     entry: './src/index.js',
     output: {
       path: resolve('./dist'),
-      filename: 'tmc-client' + (env.prod ? '.min.js' : '.js')
+      filename: 'tmc-client' + (env.prod ? '.min.js' : '.js'),
+      library: 'TmcClient',
+      libraryTarget: 'var'
     },
     module: {
       loaders: [

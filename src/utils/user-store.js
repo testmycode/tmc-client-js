@@ -1,7 +1,7 @@
 import store from 'store';
 
 export function getUser() {
-  store.get('tmc.user');
+  return store.get('tmc.user');
 }
 
 export function setUser(user) {
