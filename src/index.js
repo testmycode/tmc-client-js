@@ -1,5 +1,7 @@
-import 'babel-polyfill';
-import 'fetch-polyfill';
+try {
+  require('babel-polyfill');
+  require('fetch-polyfill');
+} catch(e) {}
 
 import TmcClient from './tmc-client';
 

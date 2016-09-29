@@ -8,13 +8,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _api = require('./utils/api');
 
-var api = _interopRequireWildcard(_api);
-
 var _userStore = require('./utils/user-store');
-
-var userStore = _interopRequireWildcard(_userStore);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41,15 +35,12 @@ var TmcClient = function () {
         body: body
       };
 
-      return api.post('/oauth/token', options).then(function (response) {
+      return (0, _api.post)('/oauth/token', options).then(function (response) {
         return response.json();
       }).then(function (response) {
-        var user = {
-          username: username,
-          accessToken: response.access_token
-        };
+        var user = { username: username, accessToken: response.access_token };
 
-        userStore.setUser(user);
+        (0, _userStore.setUser)(user);
 
         return user;
       });
@@ -57,12 +48,14 @@ var TmcClient = function () {
   }, {
     key: 'unauthenticate',
     value: function unauthenticate() {
-      userStore.removeUser();
+      (0, _userStore.removeUser)();
+
+      return this;
     }
   }, {
     key: 'getUser',
     value: function getUser() {
-      return userStore.getUser();
+      return (0, _userStore.getUser)();
     }
   }]);
 

@@ -3344,13 +3344,7 @@ var TmcClient =
 	
 	var _api = __webpack_require__(119);
 	
-	var api = _interopRequireWildcard(_api);
-	
 	var _userStore = __webpack_require__(86);
-	
-	var userStore = _interopRequireWildcard(_userStore);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -3377,15 +3371,12 @@ var TmcClient =
 	        body: body
 	      };
 	
-	      return api.post('/oauth/token', options).then(function (response) {
+	      return (0, _api.post)('/oauth/token', options).then(function (response) {
 	        return response.json();
 	      }).then(function (response) {
-	        var user = {
-	          username: username,
-	          accessToken: response.access_token
-	        };
+	        var user = { username: username, accessToken: response.access_token };
 	
-	        userStore.setUser(user);
+	        (0, _userStore.setUser)(user);
 	
 	        return user;
 	      });
@@ -3393,12 +3384,14 @@ var TmcClient =
 	  }, {
 	    key: 'unauthenticate',
 	    value: function unauthenticate() {
-	      userStore.removeUser();
+	      (0, _userStore.removeUser)();
+	
+	      return this;
 	    }
 	  }, {
 	    key: 'getUser',
 	    value: function getUser() {
-	      return userStore.getUser();
+	      return (0, _userStore.getUser)();
 	    }
 	  }]);
 	
@@ -3821,16 +3814,17 @@ var TmcClient =
 	  value: true
 	});
 	
-	__webpack_require__(116);
-	
-	__webpack_require__(117);
-	
 	var _tmcClient = __webpack_require__(115);
 	
 	var _tmcClient2 = _interopRequireDefault(_tmcClient);
-
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+	
+	try {
+	  __webpack_require__(116);
+	  __webpack_require__(117);
+	} catch (e) {}
+	
 	exports.default = _tmcClient2.default;
 	module.exports = exports['default'];
 
@@ -3850,10 +3844,6 @@ var TmcClient =
 	
 	var _userStore = __webpack_require__(86);
 	
-	var userStore = _interopRequireWildcard(_userStore);
-	
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-	
 	var API_ENDPOINT = 'https://tmc.mooc.fi';
 	
 	function request(path) {
@@ -3861,11 +3851,12 @@ var TmcClient =
 	
 	  var headers = options.headers || {};
 	
-	  var user = userStore.getUser();
+	  var user = (0, _userStore.getUser)();
 	
 	  if (user && user.accessToken) {
 	    headers = Object.assign({
-	      authorization: 'Bearer ' + user.accessToken
+	      authorization: 'Bearer ' + user.accessToken,
+	      'Content-Type': 'application/json'
 	    }, headers);
 	  }
 	
@@ -3874,11 +3865,15 @@ var TmcClient =
 	  });
 	}
 	
-	function post(path, options) {
+	function post(path) {
+	  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
 	  return request(path, Object.assign({}, options, { method: 'POST' }));
 	}
 	
-	function get(path, options) {
+	function get(path) {
+	  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
 	  return request(path, Object.assign({}, options, { method: 'GET' }));
 	}
 

@@ -9,10 +9,6 @@ exports.get = get;
 
 var _userStore = require('./user-store');
 
-var userStore = _interopRequireWildcard(_userStore);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 var API_ENDPOINT = 'https://tmc.mooc.fi';
 
 function request(path) {
@@ -20,11 +16,12 @@ function request(path) {
 
   var headers = options.headers || {};
 
-  var user = userStore.getUser();
+  var user = (0, _userStore.getUser)();
 
   if (user && user.accessToken) {
     headers = Object.assign({
-      authorization: 'Bearer ' + user.accessToken
+      authorization: 'Bearer ' + user.accessToken,
+      'Content-Type': 'application/json'
     }, headers);
   }
 
@@ -33,10 +30,14 @@ function request(path) {
   });
 }
 
-function post(path, options) {
+function post(path) {
+  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
   return request(path, Object.assign({}, options, { method: 'POST' }));
 }
 
-function get(path, options) {
+function get(path) {
+  var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
   return request(path, Object.assign({}, options, { method: 'GET' }));
 }
