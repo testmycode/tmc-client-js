@@ -11,14 +11,14 @@ class TmcClient {
       `client_secret=${CLIENT_SECRET}`,
       `username=${username}`,
       `password=${password}`,
-      'grant_type=password'
+      'grant_type=password',
     ].join('&');
 
     const options = {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body
+      body,
     };
 
     return post('/oauth/token', options)

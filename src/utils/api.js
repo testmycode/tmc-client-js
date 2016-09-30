@@ -10,7 +10,7 @@ export function request(path, options = {}) {
   if (user && user.accessToken) {
     headers = Object.assign({
       authorization: `Bearer ${user.accessToken}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }, headers);
   }
 
