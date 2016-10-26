@@ -6,19 +6,18 @@ const CLIENT_SECRET = 'f33e39d88736beb471048f56bc86a6f8f7ede82382383cef1283fc21a
 
 class TmcClient {
   authenticate({ username, password }) {
-    const body = [
-      `client_id=${CLIENT_ID}`,
-      `client_secret=${CLIENT_SECRET}`,
-      `username=${encodeURIComponent(username)}`,
-      `password=${encodeURIComponent(password)}`,
-      'grant_type=password',
-    ].join('&');
+    const data = new FormData();
+    data.append('client_id', CLIENT_ID);
+    data.append('client_secret', CLIENT_SECRET);
+    data.append('username', username);
+    data.append('password', password);
+    data.append('grant_type', 'password');
 
     const options = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body,
+      body: data,
     };
 
     return post('/oauth/token', options)
