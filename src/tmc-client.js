@@ -1,14 +1,17 @@
-import { post } from './utils/api';
+import Api from './utils/api';
 import { getUser, setUser, removeUser } from './utils/user-store';
 
-const CLIENT_ID = 'ffb9fccb2a873a9eaa56ef3d2624ddce9dff60d51cf423f52af5db020c51c580';
-const CLIENT_SECRET = 'f33e39d88736beb471048f56bc86a6f8f7ede82382383cef1283fc21ab633705';
-
 class TmcClient {
+  constructor(clientId, clientSecret, oAuthSite = 'https://tmc.mooc.fi') {
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.api = new Api(oAuthSite);
+  }
+
   authenticate({ username, password }) {
     const body = [
-      `client_id=${CLIENT_ID}`,
-      `client_secret=${CLIENT_SECRET}`,
+      `client_id=${this.clientId}`,
+      `client_secret=${this.clientSecret}`,
       `username=${encodeURIComponent(username)}`,
       `password=${encodeURIComponent(password)}`,
       'grant_type=password',
@@ -21,7 +24,7 @@ class TmcClient {
       body,
     };
 
-    return post('/oauth/token', options)
+    return this.api.post('/oauth/token', options)
       .then(response => response.json())
       .then(response => {
         const user = { username, accessToken: response.access_token };
