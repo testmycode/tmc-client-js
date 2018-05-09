@@ -9,30 +9,45 @@ class TmcClient {
   }
 
   authenticate({ username, password }) {
-    const body = [
-      `client_id=${this.clientId}`,
-      `client_secret=${this.clientSecret}`,
-      `username=${encodeURIComponent(username)}`,
-      `password=${encodeURIComponent(password)}`,
-      'grant_type=password',
-    ].join('&');
+    return new Promise((resolve, reject) => {
+      const body = [
+        `client_id=${this.clientId}`,
+        `client_secret=${this.clientSecret}`,
+        `username=${encodeURIComponent(username)}`,
+        `password=${encodeURIComponent(password)}`,
+        'grant_type=password',
+      ].join('&');
 
-    const options = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body,
-    };
+      const options = {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body,
+      };
 
-    return this.api.post('/oauth/token', options)
-      .then(response => response.json())
-      .then(response => {
-        const user = { username, accessToken: response.access_token };
-
-        setUser(user);
-
-        return user;
-      });
+      this.api
+        .post('/oauth/token', options)
+        .then(response => response.json())
+        .then(response => {
+          const user = { username, accessToken: response.access_token };
+          if (username.indexOf('@') !== -1) {
+            this.api
+              .get('/api/v8/users/current', {
+                accessToken: response.access_token,
+              })
+              .then(res => res.json())
+              .then(details => {
+                user.username = details.username;
+                setUser(user);
+                resolve(user);
+              });
+          } else {
+            setUser(user);
+            resolve(user);
+          }
+        })
+        .catch(reject);
+    });
   }
 
   unauthenticate() {

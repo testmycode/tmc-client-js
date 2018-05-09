@@ -15,9 +15,7 @@ try {
   require('fetch-polyfill');
   require('babel-polyfill');
   /* eslint-enable global-require */
-} catch (e) {
-  console.warn('Could not require some of the dependencies.');
-}
+} catch (e) {}
 
 exports.default = _tmcClient2.default;
 module.exports = exports['default'];

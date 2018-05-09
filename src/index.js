@@ -4,7 +4,7 @@ try {
   require('babel-polyfill');
   /* eslint-enable global-require */
 } catch (e) {
-  console.warn('Could not require some of the dependencies.');
+
 }
 
 import TmcClient from './tmc-client';
