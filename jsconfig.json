@@ -1,0 +1,22 @@
+{
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "module": "ES2015",
+    "noEmit": false,
+    // Generate d.ts files
+    "declaration": true,
+    // Types should go into this directory.
+    // Removing this would place the .d.ts files
+    // next to the .js files
+    "outDir": "build",
+    // go to js file when using IDE functions like
+    // "Go to Definition" in VSCode
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "typeAcquisition": {
+    "enable": true
+  },
+  "exclude": ["node_modules", "dist"]
+}

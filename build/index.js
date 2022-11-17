@@ -1,21 +1,22 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _tmcClient = require('./tmc-client');
-
-var _tmcClient2 = _interopRequireDefault(_tmcClient);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+/**
+ * @module TmcClient
+ */
 try {
-  /* eslint-disable global-require */
-  require('fetch-polyfill');
-  require('babel-polyfill');
-  /* eslint-enable global-require */
-} catch (e) {}
-
-exports.default = _tmcClient2.default;
-module.exports = exports['default'];
+    /* eslint-disable global-require */
+    require('fetch-polyfill');
+    require('unfetch/polyfill');
+    /* eslint-enable global-require */
+}
+catch (e) {
+    // ignore
+}
+/* eslint-disable import/first */
+import TmcClient from './tmc-client';
+export default TmcClient;
+/**
+ * @exports @typedef {import('./tmc-client').AuthenticatedUser} AuthenticatedUser
+ * @exports @typedef {import('./tmc-client').AuthenticatedUserDetails} AuthenticatedUserDetails
+ * @exports @typedef {import('./tmc-client').AuthenticateArgs} AuthenticateArgs
+ * @exports @typedef {import('./tmc-client').UserField} UserField
+ * @exports @typedef {import('./tmc-client').ExtraFields} ExtraFields
+ */

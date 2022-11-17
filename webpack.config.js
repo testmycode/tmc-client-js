@@ -1,29 +1,60 @@
-const webpack = require('webpack')
-const path = require('path')
-const resolve = path.resolve
+// @ts-check
+const path = require('path');
 
-module.exports = env => {
-  return {
-    entry: './src/index.js',
-    output: {
-      path: resolve('./dist'),
-      filename: 'tmc-client' + (env.prod ? '.min.js' : '.js'),
-      library: 'TmcClient',
-      libraryTarget: 'var'
-    },
-    module: {
-      loaders: [
-        { test: /(\.jsx|\.js)$/, loader: 'babel!eslint', exclude: /(node_modules)/ },
-        { test: /(\.jsx|\.js)$/, loader: "eslint-loader", exclude: /node_modules/ }
-      ]
-    },
-    resolve: {
-      root: path.resolve('./src'),
-      extensions: ['', '.js']
-    },
-    plugins: [
-      env.prod ? undefined : webpack.optimize.UglifyJsPlugin({ minimize: true })
-    ].filter(p => !!p),
-    devtool: 'source-map',
-  }
-}
+const { resolve } = path;
+const ESLintPlugin = require('eslint-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
+const eslintPluginOptions = {
+  exclude: ['node_modules', 'dist', 'build'],
+};
+
+/**
+ * @param {*} env
+ * @returns {import('webpack').Configuration}
+ */
+module.exports = (env) => ({
+  entry: './src/index.js',
+  target: ['web', 'es5'],
+  output: {
+    path: resolve('./dist'),
+    filename: `tmc-client${env.prod ? '.min.js' : '.js'}`,
+    library: 'TmcClient',
+    libraryTarget: 'var',
+  },
+  module: {
+    rules: [
+      {
+        test: /(\.jsx|\.js)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { useBuiltIns: 'usage', corejs: '3.6' }],
+            ],
+            plugins: [['@babel/plugin-transform-runtime', { corejs: false }]],
+          },
+        },
+      },
+    ],
+  },
+  resolve: {
+    modules: ['./src', './node_modules'],
+    extensions: ['', '.js'],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({ extractComments: false })],
+  },
+  plugins: [
+    env.prod ? undefined : new ESLintPlugin(eslintPluginOptions),
+  ].filter(
+    /**
+     *  @param {any} p
+     *  @returns {p is keyof import('webpack').Configuration['plugins']}
+     */
+    (p) => !!p,
+  ),
+  devtool: 'source-map',
+});
