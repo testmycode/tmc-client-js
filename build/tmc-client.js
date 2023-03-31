@@ -2,33 +2,11 @@
 /* eslint-disable prefer-template */
 import Api from './utils/api';
 import { getUser, setUser, removeUser } from './utils/user-store';
-/**
- * @typedef {{ username: string, accessToken: string }} AuthenticatedUser
- * @typedef {{ username: string, password: string}} AuthenticateArgs
- * @typedef {{ first_name: string
-               last_name: string
-               html1: string
-               organizational_id: string
-               course_announcements: boolean
-            }} UserField
- * @typedef {object} ExtraFields
- * @typedef {{ id: number
-               username: string
-               email: string
-               user_field: UserField
-               extra_fields: ExtraFields
-               administrator: boolean
-            }} AuthenticatedUserDetails
- */
-/**
- * @class TmcClient
- */
 var TmcClient = /** @class */ (function () {
     /**
-     * @constructor
      * @param {string} clientId
      * @param {string} clientSecret
-     * @param {string} [oAuthSite="https://tmc.mooc.fi"]
+     * @param {string} [oAuthSite]
      */
     function TmcClient(clientId, clientSecret, oAuthSite) {
         if (oAuthSite === void 0) { oAuthSite = 'https://tmc.mooc.fi'; }
@@ -57,9 +35,9 @@ var TmcClient = /** @class */ (function () {
             /** @type {import("./utils/api").RequestOptions} */
             var options = {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: body
+                body: body,
             };
             _this.api
                 .post('/oauth/token', options)
@@ -71,7 +49,7 @@ var TmcClient = /** @class */ (function () {
                 if (username.indexOf('@') !== -1) {
                     _this.api
                         .get('/api/v8/users/current', {
-                        accessToken: response.access_token
+                        accessToken: response.access_token,
                     })
                         .then(function (res) { return res.json(); })
                         .then(function (
@@ -86,7 +64,8 @@ var TmcClient = /** @class */ (function () {
                     setUser(user);
                     resolve(user);
                 }
-            })["catch"](reject);
+            })
+                .catch(reject);
         });
     };
     /** @this {TmcClient} */
@@ -105,9 +84,36 @@ var TmcClient = /** @class */ (function () {
             _this.api
                 .get('/api/v8/users/current?show_user_fields=true')
                 .then(function (res) { return res.json(); })
-                .then(resolve)["catch"](reject);
+                .then(resolve)
+                .catch(reject);
         });
     };
     return TmcClient;
 }());
 export default TmcClient;
+/**
+ * @typedef {Object} AuthenticatedUser
+ * @property {string} username
+ * @property {string} accessToken
+ *
+ * @typedef {Object} AuthenticateArgs
+ * @property {string} username
+ * @property {string} password
+ *
+ * @typedef {Object} UserField
+ * @property {string} first_name
+ * @property {string} last_name
+ * @property {string} html1
+ * @property {string} organizational_id
+ * @property {boolean} course_announcements
+ *
+ * @typedef {Object} ExtraFields
+ *
+ * @typedef {Object} AuthenticatedUserDetails
+ * @property {number} id
+ * @property {string} username
+ * @property {string} email
+ * @property {UserField} user_field
+ * @property {ExtraFields} extra_fields
+ * @property {boolean} administrator
+ */

@@ -22,7 +22,7 @@ var Api = /** @class */ (function () {
             var token = (user && user.accessToken) || options.accessToken;
             headers = Object.assign({
                 authorization: 'Bearer ' + token,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }, headers);
         }
         return fetch(new Request(this.oauthSite + path, Object.assign({ mode: 'cors' }, options, { headers: headers }))).then(function (response) { return (response.ok ? Promise.resolve(response) : Promise.reject(response)); });

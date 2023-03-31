@@ -5,6 +5,7 @@ const { resolve } = path;
 const ESLintPlugin = require('eslint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
+/** @type {ESLintPlugin.Options} */
 const eslintPluginOptions = {
   exclude: ['node_modules', 'dist', 'build'],
 };
@@ -47,14 +48,6 @@ module.exports = (env) => ({
     minimize: true,
     minimizer: [new TerserPlugin({ extractComments: false })],
   },
-  plugins: [
-    env.prod ? undefined : new ESLintPlugin(eslintPluginOptions),
-  ].filter(
-    /**
-     *  @param {any} p
-     *  @returns {p is keyof import('webpack').Configuration['plugins']}
-     */
-    (p) => !!p,
-  ),
+  plugins: env.prod ? undefined : [new ESLintPlugin(eslintPluginOptions)],
   devtool: 'source-map',
 });
