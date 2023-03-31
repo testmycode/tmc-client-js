@@ -1,5 +1,4 @@
 // @ts-check
-/* eslint-disable prefer-template */
 import Api from './utils/api';
 import { getUser, setUser, removeUser } from './utils/user-store';
 

@@ -19,7 +19,7 @@ module.exports = (env) => ({
   target: ['web', 'es5'],
   output: {
     path: resolve('./dist'),
-    filename: `tmc-client${env.prod ? '.min.js' : '.js'}`,
+    filename: 'tmc-client' + (env.prod ? '.min.js' : '.js'),
     library: 'TmcClient',
     libraryTarget: 'var',
   },

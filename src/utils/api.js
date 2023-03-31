@@ -1,14 +1,10 @@
 // @ts-check
-/* eslint-disable prefer-object-spread, prefer-template */ // saves >10kB minified
 import { getUser } from './user-store';
 
-/** @typedef {RequestInit & { accessToken?: string }} RequestOptions */
-/**
- * @class Api
- */
 export default class Api {
-  /** @param{string} oAuthSite */
+  /** @param {string} oAuthSite */
   constructor(oAuthSite) {
+    /** @type {string} */
     this.oauthSite = oAuthSite;
   }
 
@@ -55,3 +51,5 @@ export default class Api {
     return this.request(path, Object.assign({}, options, { method: 'GET' }));
   }
 }
+
+/** @typedef {RequestInit & { accessToken?: string }} RequestOptions */

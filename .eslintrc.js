@@ -31,6 +31,8 @@ const options = {
     'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
     'max-len': ['error', { code: 128 }],
     'no-underscore-dangle': 0,
+    'prefer-template': 0, // these two save >10kB minified
+    'prefer-object-spread': 0,
   },
 };
 
