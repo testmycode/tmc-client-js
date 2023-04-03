@@ -1,18 +1,15 @@
 {
   "name": "tmc-client-js",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Client for TMC",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/tmc-client.common.js",
+  "module": "src/index.js",
+  "browser": "dist/tmc-client.min.js",
+  "types": "dist/index",
   "license": "MIT OR Apache-2.0",
-  "exports": {
-    ".": "./build/index.js",
-    "./package.json": "./package.json",
-    "./*": "./build/*"
-  },
   "scripts": {
     "lint": "eslint src",
-    "prepublish": "mkdir -p build && babel src/ -d build/ && npm run types",
+    "prepublish": "rm -rf dist && npm run build && npm run types",
     "types": "tsc -p jsconfig.json",
     "build": "NODE_ENV=production webpack --mode=production --env prod",
     "dev": "webpack --progress --watch --mode=development --env dev"
@@ -30,11 +27,11 @@
   },
   "homepage": "https://github.com/testmycode/tmc-client-js#readme",
   "devDependencies": {
-    "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
     "@babel/eslint-parser": "^7.21.3",
     "@babel/plugin-transform-runtime": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
+    "@types/store": "^2.0.2",
     "babel-loader": "^9.1.2",
     "babel-plugin-add-module-exports": "^1.0.4",
     "core-js": "^3.29.1",
@@ -46,12 +43,10 @@
     "terser-webpack-plugin": "^5.3.7",
     "typescript": "^5.0.3",
     "webpack": "^5.77.0",
-    "webpack-cli": "^5.0.1",
-    "yargs": "^17.7.1"
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
-    "encoding": "^0.1.13",
     "fetch-polyfill": "^0.8.2",
     "store": "^2.0.12",
     "unfetch": "^5.0.0"
