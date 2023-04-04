@@ -18,10 +18,12 @@ class TmcClient {
   }
 
   /**
-   * @param {AuthenticateArgs} user
+   * @param {AuthenticateArgs} args
    * @returns {Promise<AuthenticatedUser>}
    */
-  authenticate({ username, password }) {
+  authenticate(args) {
+    const { username, password } = args;
+
     return new Promise((resolve, reject) => {
       const body = [
         'client_id=' + this.clientId,
